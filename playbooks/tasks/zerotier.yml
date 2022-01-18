@@ -1,0 +1,25 @@
+# Zerotier setup for the node
+- name: Install ZeroTier One from the official repo
+  dnf:
+    name: zerotier-one
+    state: present
+    enabled: yes
+    autoremove: no
+    refresh: yes
+    releasever: 7
+    disable_excludes: yes
+    fail_on_missing: no
+    # This is the default, but we set it here for clarity
+    disable_plugin: yes
+- name: Enable ZeroTier One service
+  service:
+    name: zerotier-one
+    state: started
+
+- name: Join ZeroTier intranet
+  # import vars from vars/zerotier.yml
+  become: yes
+  vars_files:
+    - vars/zerotier.yml
+  # run command
+  command: zerotier-cli join {{ zerotier_network_id }}

@@ -1,0 +1,30 @@
+# Koji Builder Ansible
+- name: Install and set up Koji Builder
+  hosts: "kojibuilder"
+  become: true
+
+  handlers:
+    - import_tasks: handlers/main.yml
+
+  pre_tasks:
+    - import_tasks: tasks/zerotier.yml
+
+  tasks:
+    - name: Install Koji Builder
+      dnf:
+        name: '{{ item }}'
+        state: present
+        update_cache: yes
+      with_items:
+        - 'koji-builder'
+        - 'koji-builder-plugin-rpmautospec'
+        - 'koji-builder-plugins'
+        - 'koji-osbuild-builder'
+    - name: Configure Koji Builder
+      template:
+        src: 'templates/etc/kojid/kojid.conf'
+        dest: '/etc/kojid/kojid.conf'
+    - name: set up runroot
+      template:
+        src: 'templates/etc/kojid/plugins/runroot.conf'
+        dest: '/etc/kojid/plugins/runroot.conf'

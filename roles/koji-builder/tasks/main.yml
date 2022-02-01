@@ -1,0 +1,20 @@
+- name: Install Koji builder packages
+  package:
+    name: koji-builder
+    state: present
+
+- name: copy /etc/kojid/kojid.conf
+  copy:
+    src: files/kojid.conf
+    dest: /etc/kojid/kojid.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart kojid
+
+- name: start kojid
+  service:
+    name: kojid
+    enabled: true
+    state: started

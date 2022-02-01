@@ -1,0 +1,13 @@
+- name: set up Koji
+  hosts: koji
+  become: true
+  become_method: sudo
+  roles:
+  - ipa
+  - koji-client
+  - postgresql
+  - koji-hub
+  - koji-web
+  - koji-builder
+  - koji-ra
+  - koji-gc

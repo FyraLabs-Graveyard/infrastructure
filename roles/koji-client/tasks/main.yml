@@ -1,0 +1,29 @@
+# Set up the client for authentication
+
+- name: Install Koji client packages
+  package:
+    name:
+    - koji
+    - krb5-workstation
+    state: present
+
+- name: copy koji client profile configuration
+  copy:
+    src: files/koji.conf
+    dest: /etc/koji.conf
+    owner: root
+    group: root
+    mode: 0644
+- name: copy compose profile
+  copy:
+    src: files/uml-compose.conf
+    dest: /etc/koji.d/uml-compose.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: symlink "kojidev" alias for this profile
+  file:
+    src: /usr/bin/koji
+    dest: /usr/bin/kojidev
+    state: link

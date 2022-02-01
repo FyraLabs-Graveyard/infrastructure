@@ -1,5 +1,0 @@
----
-- name: restart_kojibuilder
-  service:
-    name: kojid
-    state: restarted

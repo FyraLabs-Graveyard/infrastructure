@@ -1,0 +1,28 @@
+- name: Install Koji utils package
+  dnf:
+    name: "koji-utils"
+    state: latest
+
+- name: Log in to IPA server
+  # run command
+  command: "echo '{{ ipa_password }}' | kinit {{ ipa_user }}"
+
+- name: Import Kojira keytab
+  # run command
+  command: "ipa-getkeytab -p kojra/lapis.ultramairne-linux.org -k /etc/kojira/kojira.keytab"
+
+- name: copy /etc/kojira/kojira.conf
+  copy:
+    src: files/kojira.conf
+    dest: /etc/kojira/kojira.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+  - restart kojira
+
+- name: start kojira
+  service:
+    name: kojira
+    enabled: true
+    state: started

@@ -1,4 +1,0 @@
-# ZeroTier One vars
-# Path: playbooks/vars/zerotier.yml
----
-zerotier-network: 'insert network id here'
